@@ -1,0 +1,1 @@
+#define LEN_CHAR 128
