@@ -1,3 +1,4 @@
+#include "global.h"
 #include"constants.h"
 #include <bits/stdc++.h>
 #include"ctime"
@@ -55,11 +56,21 @@ void Book::setCheckedOut(bool status){
 
 void Book::setIssuer(string newIssuer){
     issuer = newIssuer;
+    cout << "Issued to Id : " << newIssuer << endl;
 }
  
-void Book::setDueDate(tm newDueDate){
-    dueDate = newDueDate;
+void Book::setDueDate(){
+    time_t t = time(0);
+    tm* currTime = localtime(&t);
+    t += 30*(24*60*60);
+
+    currTime = localtime(&t);
+    cout << "New Due Date Set to " << endl;
+    dueDate = *localtime(&t);
+    displayDate(&dueDate);
+    return;
 }
+
 
 void Book::showDueDate(){
     cout << dueDate.tm_mday << ":" << dueDate.tm_mon << ":" << dueDate.tm_year << endl; 

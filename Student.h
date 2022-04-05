@@ -19,5 +19,6 @@ class Student : public User {
         void addBook();
         void removeBook();
         void displayBooks();
+        void calculateFineAmount();
 };
 #endif

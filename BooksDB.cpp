@@ -120,7 +120,7 @@ void BooksDB::updateBook(){
     return;
 }
 
-void BooksDB::searchBook(){
+Book* BooksDB::searchBook(){
 
     string temp;
     cout << "Enter Book ISBN : ";
@@ -136,7 +136,10 @@ void BooksDB::searchBook(){
     }
     else{
         cout << "No book with this ISBN found.";
+        book.setTitle("NA");
+        return NULL;
     }
+    return &(*it);
 }
 
 void BooksDB::deleteBook(){

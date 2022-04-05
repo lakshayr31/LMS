@@ -15,7 +15,7 @@ class BooksDB {
         void displayBooks();
         void updateBook();
         void deleteBook();
-        void searchBook();
+        Book* searchBook();
 };
 
 #endif

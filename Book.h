@@ -29,7 +29,7 @@ class Book {
         void setAuthor(std::string author);
         void setISBN(std::string isbn);
         void setPublication(std::string publication);
-        void setDueDate(std::tm newDate);
+        void setDueDate();
         void setCheckedOut(bool checkOut);
         void setIssuer(std::string issuer);
         void showDueDate();
