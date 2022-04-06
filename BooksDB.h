@@ -1,9 +1,8 @@
-#ifndef BOOKDB_H
-#define BOOKDB_H
+#ifndef BOOKSDB_H
+#define BOOKSDB_H
 
 #include <bits/stdc++.h>
 #include <string.h>
-
 #include "Book.h"
 
 

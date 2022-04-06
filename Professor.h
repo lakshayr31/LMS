@@ -10,7 +10,7 @@ class Professor : public User {
     private :
         int fineAmount;
         int numOfBooks;
-        std::vector<Book> borrowedBooks;
+        std::vector<Book*> borrowedBooks;
     public :
         void setFineAmount(int amount);
         void setNumOfBooks(int count);
@@ -19,6 +19,7 @@ class Professor : public User {
         void addBook();
         void removeBook();
         void displayBooks();
+        void calculateFineAmount();
 };
 
 #endif

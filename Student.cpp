@@ -28,15 +28,17 @@ void Student::addBook(){
     }
     if(book->getCheckedOut() == true){
         cout << "Book already checked out to somebody else." << endl;
+        return;
     }
     if(numOfBooks > 5){
          cout << "Already checked out 5 books, cannot issue more." << endl;
+         return;
     }
     
-    borrowedBooks.push_back(*book);
-    book->setCheckedOut(true);
+    borrowedBooks.push_back(book);
+    book->setCheckedOut(1);
     book->setIssuer(id);
-    book->setDueDate();
+    book->setDueDate("STUDENT");
     cout << "Book added." << endl;
 
     return;
@@ -46,17 +48,17 @@ void Student::removeBook(){
     
     for(int i = 0;i<borrowedBooks.size();i++){
         cout << i+1 << " " << endl;
-        borrowedBooks[i].printBook();
+        borrowedBooks[i]->printBook();
     }
     cout << "Choose the number : " << endl; 
     string temp;
     getline(cin,temp);
-    if(stoi(temp) > 5){
+    if(stoi(temp) > borrowedBooks.size()){
         cout << "Invalid number given. Aborting." << endl;
         return;
     }
-    Book* book = &(*(borrowedBooks.begin() + stoi(temp) - 1));
-    book->setCheckedOut(false);
+    Book* book = *(borrowedBooks.begin() + stoi(temp) - 1);
+    book->setCheckedOut(0);
     book->setIssuer("");
     borrowedBooks.erase(borrowedBooks.begin() + stoi(temp) - 1);
 
@@ -67,8 +69,12 @@ void Student::removeBook(){
 
 void Student::displayBooks(){
     cout << "All the Book Checked Out by the student are" << endl;
+    if(borrowedBooks.size() == 0){
+        cout << "No books issued." << endl;
+        return;
+    }
     for(auto& book:borrowedBooks){
-        book.printBook();
+        book->printBook();
     }
     return;
 }
@@ -84,12 +90,13 @@ void Student::calculateFineAmount(){
     int days = 0;
 
     for(auto& book : borrowedBooks){
-        tm dueDate = book.getDueDate();
-        cout << "Inside Borrowed Books " << endl;
+        tm dueDate = book->getDueDate();
         displayDate(&dueDate);
-        if(t > mktime(&dueDate)){
-            days += diffInDays(currTime, &dueDate);
-        }
+        // if(t > mktime(&dueDate)){
+        //     days += diffInDays(currTime, &dueDate);
+        // } else {
+        //     cout  << "Time Did not enter" << endl;
+        // }
     }
     cout << "The days are " << days << endl;
     setFineAmount(days*2);

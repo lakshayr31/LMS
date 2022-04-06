@@ -33,6 +33,8 @@ void BooksDB::addBook(){
     newBook.setPublication(temp);
 
     cout << "Adding the following book : ";
+    newBook.setCheckedOut(0);
+    newBook.setIssuer("");
     newBook.printBook();
 
     cout << "Continue: (Y/N)";
@@ -131,10 +133,7 @@ Book* BooksDB::searchBook(){
     Book book;
     book.setISBN(temp);
     it = find(bookList.begin(),bookList.end(),book);
-    if(it!=bookList.end()){
-        it->printBook();
-    }
-    else{
+    if(it==bookList.end()){
         cout << "No book with this ISBN found.";
         book.setTitle("NA");
         return NULL;

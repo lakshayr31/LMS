@@ -2,7 +2,10 @@
 #include "Book.h"
 #include "BooksDB.h"
 #include "User.h"
+#include "UserDB.h"
 #include "Student.h"
+#include "Librarian.h"
+#include "Professor.h"
 #include "bits/stdc++.h"
 
 using namespace std;
@@ -15,21 +18,32 @@ void displayDate(tm* date){
     cout << date->tm_mday <<  ":" <<  date->tm_mon + 1<<":" << date->tm_year + 1900 << endl;
 }
 
-int diffInDays(tm* date1, tm* date2){
-    displayDate(date1);
-    displayDate(date2);
-
-    time_t time1 = mktime(date1);
-    time_t time2 = mktime(date2);
-    
-    cout << abs(time1-time2) << endl;
-    int days = abs(time1-time2)/(24*60*60);
-    return days;
-}
-
 void showLibrarianOptions(){
+
+    string givenId;
+    string givenPassword;
+
+    cout << "Enter ID " << endl;
+
+    cin >> givenId; 
+    
+    cout << "Enter Password " << endl;
+
+    cin >> givenPassword;
+
+    Librarian* lib = (Librarian*)usersDB.searchUserByIdAndPassword(givenId,givenPassword);
+    if(lib == NULL){
+        return;
+    }
+    lib->printUser();
+    if(lib->getType() != "LIBRARIAN"){
+        cout << "Wrong UserName and Password for the given options" << endl;
+        return;
+    }
+
     while(1)
     {
+        int choice;
         cout<<"What would you like to do?"<<endl;
         cout<<"1. Add User"<<endl;
         cout<<"2. Update Existing User"<<endl;
@@ -42,11 +56,12 @@ void showLibrarianOptions(){
         cout<<"9. Get Book Details"<<endl;
         cout<<"10. Get Book List Of User"<<endl;
         cout<<"11. Logout"<<endl;
-        cin>>choice;
+        cin>>choice;    
+        cin.ignore(100,'\n');
 
         if(choice == 1)
         {
-            usersDB.addUser();
+            usersDB.addUser(0);
         }
         else if(choice == 2)
         {
@@ -54,11 +69,11 @@ void showLibrarianOptions(){
         }
         else if(choice == 3)
         {
-            usersDB.deleteUser());
+            usersDB.deleteUser();
         }
         else if(choice == 4)
         {
-            usersDB.listUsers();
+            usersDB.displayUsers();
         }
         else if(choice == 5)
         {
@@ -83,12 +98,22 @@ void showLibrarianOptions(){
         }
         else if(choice == 10)
         {
-            User user = UserDB.searchUser();
-            user.getBooks();   
+            User* user = usersDB.searchUser();
+            if(user->getType() == "STUDENT"){
+                Student* student = (Student*)user;
+                student->displayBooks();
+            }
+            else if(user->getType() == "PROFESSOR"){
+                Professor* professor = (Professor*)user;
+                professor->displayBooks();
+            }
+            else{
+                cout << "This user does not issue books" << endl;
+            }
         }
         else if(choice == 11)
         {
-            break
+            break;
         }
         else{
             cout << "Invalid Reponse. Retry" << endl;
@@ -98,8 +123,29 @@ void showLibrarianOptions(){
 
 
 void showProfessorOptions(){
+    string givenId;
+    string givenPassword;
+
+    cout << "Enter ID " << endl;
+
+    cin >> givenId; 
+    
+    cout << "Enter Password " << endl;
+
+    cin >> givenPassword;
+
+    Professor* prof = (Professor*)usersDB.searchUserByIdAndPassword(givenId,givenPassword);
+    if(prof == NULL){
+        return;
+    }
+    if(prof->getType() != "PROFESSOR"){
+        cout << "Wrong UserName and Password for the given options" << endl;
+        return;
+    }
+
     while(1)
     {
+        int choice;
         cout<<"What would you like to do?"<<endl;
         cout<<"1. Show All Books"<<endl;
         cout<<"2. Show My Checked Out Books"<<endl;
@@ -109,8 +155,7 @@ void showProfessorOptions(){
         cout<<"6. Return Book"<<endl;
         cout<<"7. Logout"<<endl;
         cin>>choice;
-
-        Professor prof = usersDB.searchUser();
+        cin.ignore(100,'\n');
 
         if(choice == 1)
         {
@@ -118,7 +163,7 @@ void showProfessorOptions(){
         }
         else if(choice == 2)
         {
-            prof.displayBooks();
+            prof->displayBooks();
         }
         else if(choice == 3)
         {
@@ -127,15 +172,15 @@ void showProfessorOptions(){
         }
         else if(choice == 4)
         {
-            prof.addBook();
+            prof->addBook();
         }
         else if(choice == 5)
         {
-            prof.calculateFineAmount();
+            prof->calculateFineAmount();
         }
         else if(choice == 6)
         {
-            prof.removeBook();
+            prof->removeBook();
         }
         else if(choice == 7)
         {
@@ -148,8 +193,31 @@ void showProfessorOptions(){
 }
 
 void showStudentOptions(){
+
+    string givenId;
+    string givenPassword;
+
+    cout << "Enter ID " << endl;
+
+    cin >> givenId; 
+    
+    cout << "Enter Password " << endl;
+
+    cin >> givenPassword;
+
+
+    Student* student = (Student*)usersDB.searchUserByIdAndPassword(givenId,givenPassword);
+    if(student == NULL){
+        return;
+    }
+    if(student->getType() != "STUDENT"){
+        cout << "Wrong UserName and Password for the given options" << endl;
+        return;
+    }
+
     while(1)
     {
+        int choice;
         cout<<"What would you like to do?"<<endl;
         cout<<"1. Show All Books"<<endl;
         cout<<"2. Show My Checked Out Books"<<endl;
@@ -159,8 +227,7 @@ void showStudentOptions(){
         cout<<"6. Return Book"<<endl;
         cout<<"7. Logout"<<endl;
         cin>>choice;
-
-        Student student = usersDB.searchUser();
+        cin.ignore(100,'\n');
 
         if(choice == 1)
         {
@@ -168,7 +235,7 @@ void showStudentOptions(){
         }
         else if(choice == 2)
         {
-            student.displayBooks();
+            student->displayBooks();
         }
         else if(choice == 3)
         {
@@ -177,15 +244,15 @@ void showStudentOptions(){
         }
         else if(choice == 4)
         {
-            student.addBook();
+            student->addBook();
         }
         else if(choice == 5)
         {
-            student.calculateFineAmount();
+            student->calculateFineAmount();
         }
         else if(choice == 6)
         {
-            student.removeBook();
+            student->removeBook();
         }
         else if(choice == 7)
         {
@@ -202,6 +269,10 @@ int main(){
 
     int choice;
     cout<<"********************* Welcome To Library Management System ********************"<<endl;
+    cout << "Adding First User as Librarian" << endl;
+    
+    usersDB.addUser(1);
+    
     while(1)
     {
         cout<<"Who are you?"<<endl;
@@ -210,6 +281,7 @@ int main(){
         cout<<"3. Student"<<endl;
         cout<<"4. Exit"<<endl;
         cin>>choice;
+        cin.ignore(100,'\n');
 
         if(choice == 1)
         {
@@ -221,11 +293,11 @@ int main(){
         }
         else if(choice == 3)
         {
-            showStudentOption();
+            showStudentOptions();
         }
         else if(choice == 4)
         {
-            break
+            break;
         }
         else{
             cout << "Invalid Reponse. Retry" << endl;
@@ -233,7 +305,7 @@ int main(){
     }
 
     cout<<"Thank You for using our software"<<endl<<"Have a Nice Day !"<<endl;
-    return;
+    return 0;
     
     // cout << "Making a Books Database " << endl;
     // string temp;

@@ -1,7 +1,7 @@
 #include "global.h"
 #include"constants.h"
 #include <bits/stdc++.h>
-#include"ctime"
+#include "ctime"
 #include "Book.h"
 
 using namespace std;
@@ -59,15 +59,22 @@ void Book::setIssuer(string newIssuer){
     cout << "Issued to Id : " << newIssuer << endl;
 }
  
-void Book::setDueDate(){
+void Book::setDueDate(string issuer){
     time_t t = time(0);
     tm* currTime = localtime(&t);
-    t += 30*(24*60*60);
+    if(issuer == "STUDENT") t += (-30)*(24*60*60);
+    else if(issuer == "PROFESSOR") t += (-60)*(24*60*60);
 
     currTime = localtime(&t);
     cout << "New Due Date Set to " << endl;
-    dueDate = *localtime(&t);
+    tm* nextDate = localtime(&t);
+    
+    dueDate.tm_mday = nextDate->tm_mday;
+    dueDate.tm_mon = nextDate->tm_mon;
+    dueDate.tm_year = nextDate->tm_year;
+
     displayDate(&dueDate);
+
     return;
 }
 
@@ -81,6 +88,11 @@ void Book::printBook(){
     cout << "Author : " << author << endl;
     cout << "ISBN : " << isbn << endl;
     cout << "Publication : " << publication << endl;
+    cout << "Checked Out : " << checkedOut << endl;
+    if(checkedOut == 1){
+        cout << "Issued To ID : " << issuer << endl;
+    }
+    return;
 }
 
 bool Book::operator== (const Book &secondBook){
