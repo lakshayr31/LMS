@@ -62,8 +62,8 @@ void Book::setIssuer(string newIssuer){
 void Book::setDueDate(string issuer){
     time_t t = time(0);
     tm* currTime = localtime(&t);
-    if(issuer == "STUDENT") t += (-30)*(24*60*60);
-    else if(issuer == "PROFESSOR") t += (-60)*(24*60*60);
+    if(issuer == "STUDENT") t += (30)*(24*60*60);
+    else if(issuer == "PROFESSOR") t += (60)*(24*60*60);
 
     currTime = localtime(&t);
     cout << "New Due Date Set to " << endl;

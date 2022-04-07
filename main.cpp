@@ -13,6 +13,21 @@ using namespace std;
 BooksDB booksDB;
 UserDB usersDB;
 
+int diffDays(tm* date1, tm* date2){
+    int days = 0;
+    if(date2->tm_mon > date1->tm_mon){
+        days += 30*(date2->tm_mon - date1->tm_mon - 1);
+
+        days += (30 - date1->tm_mday) + date2->tm_mday;
+        
+    }
+    else if(date2->tm_mon == date1->tm_mon){
+        if(date2->tm_mday > date1->tm_mday){
+            days += (date2->tm_mday - date1->tm_mday);
+        }
+    }
+    return days;
+}
 
 void displayDate(tm* date){
     cout << date->tm_mday <<  ":" <<  date->tm_mon + 1<<":" << date->tm_year + 1900 << endl;

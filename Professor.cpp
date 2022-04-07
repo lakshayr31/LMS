@@ -95,13 +95,17 @@ void Professor::calculateFineAmount(){
             <<  dueDate.tm_mday
             << "\n";
         // if(difftime(mktime(&dueDate),t) > 0){
-        if(difftime(mktime(&currTime),mktime(&dueDate)) > 0){
-            days += calculateDays(mktime(&currTime),mktime(&dueDate));
-        } else {
-            cout  << "Time Did not enter" << endl;
-        }
+        if(diffDays(&dueDate,&currTime) > 0){
+            days += diffDays(&dueDate,&currTime);
+        } 
     }
-    cout << "The days are " << days << endl;
+    
+    if(days == 0){
+        cout << "No fine to be imposed." << endl;
+        return;
+    }
+    cout << "The number of days are " << days << endl;
+    cout << "The amount is " << days*5 << endl;
     setFineAmount(days*5);
     return;
 }

@@ -85,21 +85,33 @@ void Student::calculateFineAmount(){
     int amount = 0;
 
     time_t t = time(0);
-    tm* currTime = localtime(&t);
+    tm currTime = *(localtime(&t));
 
     int days = 0;
 
     for(auto& book : borrowedBooks){
         tm dueDate = book->getDueDate();
-        displayDate(&dueDate);
-        // if(t > mktime(&dueDate)){
-        //     days += diffInDays(currTime, &dueDate);
-        // } else {
-        //     cout  << "Time Did not enter" << endl;
-        // }
+        cout << (currTime.tm_year + 1900) << '-' 
+            << (currTime.tm_mon + 1) << '-'
+            <<  currTime.tm_mday
+            << "\n";
+        cout << (dueDate.tm_year + 1900) << '-' 
+            << (dueDate.tm_mon + 1) << '-'
+            <<  dueDate.tm_mday
+            << "\n";
+        if(diffDays(&dueDate,&currTime) > 0){
+            days += diffDays(&dueDate,&currTime);
+        } 
     }
-    cout << "The days are " << days << endl;
-    setFineAmount(days*2);
+
+    if(days == 0){
+        cout << "No fine to be imposed." << endl;
+        return;
+    }
+    cout << "The number of days are " << days << endl;
+    cout << "The amount is " << days*5 << endl;
+    setFineAmount(days*5);
+
     return;
 }
 
